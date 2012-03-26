@@ -1,6 +1,24 @@
-/******************************************************************************
-    bat.cpp
- ******************************************************************************/
+/*  bat.cpp
+ *
+ *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
+ *  All rights reserved.
+ *
+ *  This file is part of BatCountry.
+ *
+ *  BatCountry is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BatCountry is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
+ *
+ */
 #include "bat.h"
 #include "graphics/images.h"
 #include "utilities/random.h"
@@ -14,7 +32,9 @@ Bat::Bat(const Rect& area, double velocityBase) :
     _animationState(sAnimateA),
     _movementState(sMovingRight),
     _animationA(IMG_BAT_A),
-    _animationB(IMG_BAT_B)
+    _animationB(IMG_BAT_B),
+    _animationTimer("bat_animation_timer"),
+    _movementTimer("bat_movement_timer")
 {
 
     // Random height
@@ -44,7 +64,6 @@ Bat::~Bat()
 {
 
 }
-
 
 
 //-----------------------------------------------------------------------------
@@ -104,9 +123,7 @@ void Bat::render(Canvas& canvas)
             Rect rect(Rect::centerAroundPoint(_position, _animationB.width(), _animationB.height()));
             canvas.drawBitmap(_animationB, rect.x(), rect.y());
         } break;
-    }
-
-    
+    }    
 }
 
 

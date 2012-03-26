@@ -1,6 +1,24 @@
-/******************************************************************************
-    gamewidget.cpp
- ******************************************************************************/
+/*  gamewidget.cpp
+ *
+ *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
+ *  All rights reserved.
+ *
+ *  This file is part of BatCountry.
+ *
+ *  BatCountry is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BatCountry is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
+ *
+ */
 #include "gamewidget.h"
 #include "graphics/widgetstack.h"
 #include "sound/audioengine.h"
@@ -21,6 +39,8 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
     Widget(widgetStack),
     _statistics(200),
     _gameState(sWaveIntro),
+    _spawnTimer("spawn_timer"),
+    _waveIntroTimer("wave_intro_timer"),
     _enemyArea(-2, 2, 84, 8),
     _keystate(0),
     _actor(Rect(0,0, 80, 25), _keystate),
@@ -31,9 +51,8 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
     _overlay(IMG_OVERLAY)
 {
 
-   _sndBatHit = AudioEngine::instance()->createSource(L"hit.wav");
-   _sndExplode = AudioEngine::instance()->createSource(L"explosion.wav");
-   _sndGib = AudioEngine::instance()->createSource(L"udeath.wav");
+   _sndBatHit = AudioEngine::instance()->createSource(L"../resources/audio/hit.wav");
+   _sndExplode = AudioEngine::instance()->createSource(L"../resources/audio/explosion.wav");
 
    _weapons.push_back(new Pistol());
    _weapons.push_back(new Machinegun());
@@ -44,13 +63,13 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
    _activeWeapon = _weapons[WEAPON_PISTOL];
    _activeWeapon->buyItem();
 
-   /*
+   
    _weapons[WEAPON_MACHINEGUN]->buyItem();
    _weapons[WEAPON_RIFLE]->buyItem();
    _weapons[WEAPON_SHOTGUN]->buyItem();
    _weapons[WEAPON_ROCKET_LAUNCHER]->buyItem();
    _weapons[WEAPON_GRENADE_LAUNCHER]->buyItem();
-   */
+   
 
     _buyWidget = new BuyWidget(widgetStack, _weapons, _statistics);
     _buyWidget->addNotificationListener(this);
@@ -143,10 +162,15 @@ void GameWidget::keyEvent(int key, int flags)
             } break;
 
             case InputHandler::KEY_ESCAPE: {
+
+                /* Clear the keystate */
+                _keystate = 0;
+
                 Timer::pauseAll();
                 _gameStateStack.push_back(_gameState);
                 _gameState = sOptions;
                 _widgetStack->pushWidget(_optionsWidget);
+                _optionsWidget->setActive();
 
             } break;
         }
@@ -428,11 +452,6 @@ void GameWidget::updateBullets()
 
                     // Remove the bullet
                     removeBullet = true;
-
-                    // Play the gib sound if more than three enemies are killed
-                    if (enemiesKilled > 2) {
-                        _sndGib->play();
-                    }
 
                     // If the bullet does not do radius damage, break
                     if (!bullet->hasRadiusDamage()) {

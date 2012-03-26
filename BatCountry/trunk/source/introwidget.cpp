@@ -1,11 +1,30 @@
-/******************************************************************************
-    introwidget.cpp
- ******************************************************************************/
+/*  introwidget.cpp
+ *
+ *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
+ *  All rights reserved.
+ *
+ *  This file is part of BatCountry.
+ *
+ *  BatCountry is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BatCountry is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
+ *
+ */
 #include "introwidget.h"
 #include "graphics/widgetstack.h"
 #include "graphics/images.h"
 #include "enemies/bat.h"
 #include "utilities/random.h"
+#include "version.h"
 
 
 //-----------------------------------------------------------------------------
@@ -14,7 +33,8 @@ IntroWidget::IntroWidget(WidgetStack* widgetStack) :
     _enemyArea(-2, 2, 84, 8),
     _spawnTimeout(1000),
     _info(IMG_INFO),
-    _overlay(IMG_OVERLAY)
+    _overlay(IMG_OVERLAY),
+    _spawnTimer("intro_spawn_timer")
 {
 
 }
@@ -99,6 +119,9 @@ void IntroWidget::paintEvent(Canvas& canvas)
     canvas.drawText("to fire.", 27, 11, COLOR_WHITE);
 
     canvas.drawText("Press any key to start...", 27, 14, COLOR_WHITE);
+
+    canvas.drawText("BatCountry v" BATCOUNTRY_VERSION_STRING, 40, 22, COLOR_WHITE);
+    canvas.drawText("http://www.thenocturnaltree.com", 40, 23, COLOR_WHITE);
 }
 
 

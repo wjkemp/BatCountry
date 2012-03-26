@@ -1,4 +1,4 @@
-/*  images.h
+/*  version.h
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,20 +19,15 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#ifndef __IMAGES_H__
-#define __IMAGES_H__
+#ifndef __VERSION_H__
+#define __VERSION_H__
 
+#define _STR(x) #x
+#define STR(x) _STR(x)
 
-//-----------------------------------------------------------------------------
-extern unsigned long IMG_BAT_A[];
-extern unsigned long IMG_BAT_B[];
-extern unsigned long IMG_BULLET[];
-extern unsigned long IMG_ACTOR[];
-extern unsigned long IMG_OVERLAY[];
-extern unsigned long IMG_BUY[];
-extern unsigned long IMG_INFO[];
-extern unsigned long IMG_DEMONBAT_A[];
-extern unsigned long IMG_DEMONBAT_B[];
-extern unsigned long IMG_DEMONBAT_C[];
+#define BATCOUNTRY_VERSION_MAJOR    1
+#define BATCOUNTRY_VERSION_MINOR    0
+#define BATCOUNTRY_VERSION_STRING   STR(BATCOUNTRY_VERSION_MAJOR) "." STR(BATCOUNTRY_VERSION_MINOR)
+
 
 #endif

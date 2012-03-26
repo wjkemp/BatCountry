@@ -1,6 +1,24 @@
-/******************************************************************************
-    audioengine.cpp
- ******************************************************************************/
+/*  audioengine.cpp
+ *
+ *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
+ *  All rights reserved.
+ *
+ *  This file is part of BatCountry.
+ *
+ *  BatCountry is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  BatCountry is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
+ *
+ */
 #include "audioengine.h"
 #include "xaudio2source.h"
 #include "wavefile.h"
@@ -54,16 +72,24 @@ AudioEngine::AudioEngine()
 
 
     // Create the mastering voice
-    IXAudio2MasteringVoice* pMasteringVoice = NULL;
+    _masteringVoice = NULL;
 
-    if (FAILED( hr = _engine->CreateMasteringVoice(&pMasteringVoice))) {
+    if (FAILED( hr = _engine->CreateMasteringVoice(&_masteringVoice))) {
         SAFE_RELEASE(_engine);
         CoUninitialize();
         throw AudioException("AudioEngine: Could not create mastering voice");
     }
 
     // Set the mastering voice volume
-    pMasteringVoice->SetVolume(0.3f);
+    _masteringVoice->SetVolume(0.5f);
+}
+
+
+//-----------------------------------------------------------------------------
+void AudioEngine::setVolume(int volume)
+{
+    // Set the mastering voice volume
+    _masteringVoice->SetVolume((double)volume / 100.0);
 }
 
 

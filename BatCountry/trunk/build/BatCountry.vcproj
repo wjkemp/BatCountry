@@ -245,6 +245,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\version.h"
+				>
+			</File>
+			<File
 				RelativePath="..\source\worldobject.cpp"
 				>
 			</File>
