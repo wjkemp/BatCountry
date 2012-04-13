@@ -29,7 +29,7 @@
 RocketLauncher::RocketLauncher() :
     Weapon(0.8)
 {
-    _fireSound = AudioEngine::instance()->createSource(L"../resources/audio/rocketlauncher.wav");
+    _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/rocketlauncher.wav");
 }
 
 

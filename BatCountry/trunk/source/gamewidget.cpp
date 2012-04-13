@@ -52,8 +52,8 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
     _overlay(IMG_OVERLAY)
 {
 
-   _sndBatHit = AudioEngine::instance()->createSource(L"../resources/audio/hit.wav");
-   _sndExplode = AudioEngine::instance()->createSource(L"../resources/audio/explosion.wav");
+   _sndBatHit = AudioEngine::instance()->createSource(L"./resources/audio/hit.wav");
+   _sndExplode = AudioEngine::instance()->createSource(L"./resources/audio/explosion.wav");
 
    _weapons.push_back(new Pistol());
    _weapons.push_back(new Machinegun());
@@ -65,11 +65,11 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
    _activeWeapon->buyItem();
 
    
-   _weapons[WEAPON_MACHINEGUN]->buyItem();
-   _weapons[WEAPON_RIFLE]->buyItem();
-   _weapons[WEAPON_SHOTGUN]->buyItem();
-   _weapons[WEAPON_ROCKET_LAUNCHER]->buyItem();
-   _weapons[WEAPON_GRENADE_LAUNCHER]->buyItem();
+   //_weapons[WEAPON_MACHINEGUN]->buyItem();
+   //_weapons[WEAPON_RIFLE]->buyItem();
+   //_weapons[WEAPON_SHOTGUN]->buyItem();
+   //_weapons[WEAPON_ROCKET_LAUNCHER]->buyItem();
+   //_weapons[WEAPON_GRENADE_LAUNCHER]->buyItem();
    
 
     _buyWidget = new BuyWidget(widgetStack, _weapons, _statistics);

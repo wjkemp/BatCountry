@@ -29,7 +29,7 @@
 Shotgun::Shotgun() :
     Weapon(1.0)
 {
-    _fireSound = AudioEngine::instance()->createSource(L"../resources/audio/shotgun.wav");
+    _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/shotgun.wav");
 }
 
 

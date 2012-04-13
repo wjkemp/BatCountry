@@ -29,7 +29,7 @@
 GrenadeLauncher::GrenadeLauncher() :
     Weapon(0.6)
 {
-    _fireSound = AudioEngine::instance()->createSource(L"../resources/audio/grenadelauncher.wav");
+    _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/grenadelauncher.wav");
 }
 
 

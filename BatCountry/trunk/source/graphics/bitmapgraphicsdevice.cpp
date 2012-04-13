@@ -24,7 +24,7 @@ BitmapGraphicsDevice::BitmapGraphicsDevice(int width, int height, bool fullscree
 
 
     // Load the font
-    _font = al_load_bitmap("font_8x12.png");
+    _font = al_load_bitmap("./resources/bitmaps/font_8x12.png");
     al_convert_mask_to_alpha(_font, al_map_rgb(0, 0, 0));
    
 

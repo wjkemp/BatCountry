@@ -28,7 +28,7 @@
 Rifle::Rifle() :
     Weapon(0.4)
 {
-    _fireSound = AudioEngine::instance()->createSource(L"../resources/audio/rifle.wav");
+    _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/rifle.wav");
 }
 
 

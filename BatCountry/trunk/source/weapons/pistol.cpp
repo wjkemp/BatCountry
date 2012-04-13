@@ -29,7 +29,7 @@
 Pistol::Pistol() :
     Weapon(0.5)
 {
-    _fireSound = AudioEngine::instance()->createSource(L"../resources/audio/pistol.wav");
+    _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/pistol.wav");
 }
 
 

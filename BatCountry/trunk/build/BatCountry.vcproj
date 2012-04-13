@@ -140,7 +140,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="d:\Libraries\DX10SDK\Lib\x86;d:\Libraries\Allegro\lib"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"

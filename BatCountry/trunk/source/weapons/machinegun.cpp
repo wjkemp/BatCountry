@@ -29,7 +29,7 @@
 Machinegun::Machinegun() :
     Weapon(0.1)
 {
-    _fireSound = AudioEngine::instance()->createSource(L"../resources/audio/machinegun.wav");
+    _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/machinegun.wav");
 }
 
 
