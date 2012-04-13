@@ -30,7 +30,7 @@
 //-----------------------------------------------------------------------------
 IntroWidget::IntroWidget(WidgetStack* widgetStack) :
     Widget(widgetStack),
-    _enemyArea(-2, 2, 84, 8),
+     _enemyArea(-2, 10, 84, 12),
     _spawnTimeout(1000),
     _info(IMG_INFO),
     _overlay(IMG_OVERLAY),
@@ -106,22 +106,22 @@ void IntroWidget::paintEvent(Canvas& canvas)
         ++i;
     }
 
-    canvas.drawBitmap(_overlay, 0, 13);
-    canvas.drawBitmap(_info, 25, 2);
+    canvas.drawBitmap(_overlay, 0, 28);
+    canvas.drawBitmap(_info, 25, 8);
 
-    canvas.drawText("We can't stop here,", 30, 3, COLOR_LIGHTYELLOW);
-    canvas.drawText("This is Bat Country!", 29, 4, COLOR_LIGHTYELLOW);
+    canvas.drawText("We can't stop here,", 30, 9, COLOR_LIGHTYELLOW);
+    canvas.drawText("This is Bat Country!", 29, 10, COLOR_LIGHTYELLOW);
 
-    canvas.drawText("Kill the bats before they", 27, 7, COLOR_WHITE);
-    canvas.drawText("infest your village. Use", 27, 8, COLOR_WHITE);
-    canvas.drawText("the left and right arrows", 27, 9, COLOR_WHITE);
-    canvas.drawText("to move, and Z, X and C", 27, 10, COLOR_WHITE);
-    canvas.drawText("to fire.", 27, 11, COLOR_WHITE);
+    canvas.drawText("Kill the bats before they", 27, 12, COLOR_WHITE);
+    canvas.drawText("infest your village. Use", 27, 13, COLOR_WHITE);
+    canvas.drawText("the left and right arrows", 27, 14, COLOR_WHITE);
+    canvas.drawText("to move, and Z, X and C", 27, 15, COLOR_WHITE);
+    canvas.drawText("to fire.", 27, 16, COLOR_WHITE);
 
-    canvas.drawText("Press any key to start...", 27, 14, COLOR_WHITE);
+    canvas.drawText("Press any key to start...", 27, 20, COLOR_WHITE);
 
-    canvas.drawText("BatCountry v" BATCOUNTRY_VERSION_STRING, 40, 22, COLOR_WHITE);
-    canvas.drawText("http://www.thenocturnaltree.com", 40, 23, COLOR_WHITE);
+    canvas.drawText("BatCountry v" BATCOUNTRY_VERSION_STRING, 40, 37, COLOR_WHITE);
+    canvas.drawText("http://www.thenocturnaltree.com", 40, 38, COLOR_WHITE);
 }
 
 

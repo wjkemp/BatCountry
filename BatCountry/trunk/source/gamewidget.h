@@ -88,6 +88,7 @@ private:
 
 private:
     GameStatistics _statistics;
+    Rect _worldRect;
     Rect _enemyArea;
     std::vector<Weapon*> _weapons;
     Weapon* _activeWeapon;

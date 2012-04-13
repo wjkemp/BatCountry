@@ -42,11 +42,16 @@ public:
         const Rect& activeRect,
         const Element& element);
     ~GenericBullet();
+
     void update();
+    bool intersects(const Rect& rect) const;
+
+protected:
+    bool intersects(double Ax, double Ay, double Bx, double By, double Cx, double Cy, double Dx, double Dy) const;
 
 private:
-    double _x;
-    double _y;
+    double _x0;
+    double _y0;
     double _directionX;
     double _directionY;
     double _velocity;

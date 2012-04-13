@@ -26,7 +26,7 @@
 
 //-----------------------------------------------------------------------------
 Actor::Actor(const Rect& area, unsigned long& keystate) :
-    WorldObject(40, 18),
+    WorldObject(40, 33),
     _area(area),
     _image(IMG_ACTOR),
     _movementTimer("actor_movement"),

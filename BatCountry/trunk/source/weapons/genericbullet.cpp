@@ -33,8 +33,8 @@ GenericBullet::GenericBullet(
     const Rect& activeRect,
     const Element& element) :
     Bullet(x, y, damage, activeRect, element),
-    _x(x),
-    _y(y),
+    _x0(x),
+    _y0(y),
     _directionX(directionX),
     _directionY(directionY),
     _velocity(velocity)
@@ -57,6 +57,9 @@ void GenericBullet::update()
     
         double time = _updateTimer.elapsed();
 
+        _x0 = _x;
+        _y0 = _y;
+
         _x += _directionX * _velocity * time;
         _y += _directionY * _velocity * time;
         _position.setX(_x);
@@ -70,3 +73,38 @@ void GenericBullet::update()
     }
 }
 
+
+//-----------------------------------------------------------------------------
+bool GenericBullet::intersects(const Rect& rect) const
+{
+    bool result = false;
+
+    result |= intersects((int)(_x0 + 0.5), (int)(_y0 + 0.5), (int)(_x + 0.5), (int)(_y + 0.5), rect.left(), rect.top(), rect.right(), rect.top());
+    result |= intersects((int)(_x0 + 0.5), (int)(_y0 + 0.5),(int)(_x + 0.5), (int)(_y + 0.5), rect.left(), rect.bottom(), rect.right(), rect.bottom());
+    result |= intersects((int)(_x0 + 0.5), (int)(_y0 + 0.5), (int)(_x + 0.5), (int)(_y + 0.5), rect.left(), rect.top(), rect.left(), rect.bottom());
+    result |= intersects((int)(_x0 + 0.5), (int)(_y0 + 0.5), (int)(_x + 0.5), (int)(_y + 0.5), rect.right(), rect.top(), rect.right(), rect.bottom());
+
+    return result;
+}
+
+
+//-----------------------------------------------------------------------------
+bool GenericBullet::intersects(double Ax, double Ay, double Bx, double By, double Cx, double Cy, double Dx, double Dy) const
+{
+    bool result = false;
+
+    double numerator0 = (((Ay - Cy) * (Dx - Cx)) - ((Ax - Cx) * (Dy - Cy)));
+    double numerator1 = ((Ay - Cy) * (Bx - Ax) - ((Ax - Cx) * (By - Ay)));
+    double denominator = (((Bx - Ax) * (Dy - Cy)) - ((By - Ay) * (Dx - Cx)));
+
+    if ((denominator != 0)) {
+        double r =  numerator0 / denominator;
+        double s = numerator1 / denominator;
+
+        if (!(r < 0.0 || r > 1.0) && !(s < 0.0 || s > 1.0)) {
+            result = true;
+        }
+    }
+
+    return result;
+}

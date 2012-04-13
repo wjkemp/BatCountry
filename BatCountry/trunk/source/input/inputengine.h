@@ -1,4 +1,4 @@
-/*  main.cpp
+/*  inputengine.h
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,38 +19,35 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "basewidget.h"
-#include "graphics/widgetstack.h"
-#include "graphics/bitmapgraphicsdevice.h"
-#include "input/allegroinputengine.h"
-#include "fullscreenhandler.h"
-#include <iostream>
+#ifndef __INPUTENGINE_H__
+#define __INPUTENGINE_H__
 
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_image.h>
+#include "inputhandler.h"
+#include <list>
 
 
 //-----------------------------------------------------------------------------
-int main(int argc, char* argv[])
+//  Class Definition
+//-----------------------------------------------------------------------------
+class InputEngine
 {
-    al_init();
-    al_init_image_addon();
+
+public:
+    InputEngine();
+    virtual ~InputEngine();
+    void addInputHandler(InputHandler* handler);
+
+protected:
+    virtual void run() = 0;
+    void keyEvent(int key, int flags);
+    void updateEvent();
+    bool closeRequested();
+
+private:
+    std::list<InputHandler*> _inputHandlers;
+
+};
 
 
-    try {
 
-        AllegroInputEngine inputEngine;
-        WidgetStack widgetStack;        
-        BaseWidget baseWidget(&widgetStack);
-        FullscreenHandler fullscreenHandler(&widgetStack);
-
-        inputEngine.addInputHandler(&widgetStack);
-        inputEngine.addInputHandler(&fullscreenHandler);
-        inputEngine.run();
-
-    } catch (const std::exception& e) {
-        std::cout << "Terminated: " << e.what() << std::endl;
-    }
-
-    return 0;
-}
+#endif

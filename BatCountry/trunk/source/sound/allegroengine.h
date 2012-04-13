@@ -1,4 +1,4 @@
-/*  main.cpp
+/*  allegroengine.h
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,38 +19,28 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "basewidget.h"
-#include "graphics/widgetstack.h"
-#include "graphics/bitmapgraphicsdevice.h"
-#include "input/allegroinputengine.h"
-#include "fullscreenhandler.h"
-#include <iostream>
+#ifndef __ALLEGROENGINE_H__
+#define __ALLEGROENGINE_H__
 
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_image.h>
+#include "audioengine.h"
+#include <string>
 
 
 //-----------------------------------------------------------------------------
-int main(int argc, char* argv[])
+//  Class Definition
+//-----------------------------------------------------------------------------
+class AllegroEngine : public AudioEngine
 {
-    al_init();
-    al_init_image_addon();
+public:
+    AllegroEngine();
+    AudioSource* createSource(const std::wstring& filename);
+    void setVolume(int volume);
+    float gain() const { return _gain; }
+
+private:
+    float _gain;
+
+};
 
 
-    try {
-
-        AllegroInputEngine inputEngine;
-        WidgetStack widgetStack;        
-        BaseWidget baseWidget(&widgetStack);
-        FullscreenHandler fullscreenHandler(&widgetStack);
-
-        inputEngine.addInputHandler(&widgetStack);
-        inputEngine.addInputHandler(&fullscreenHandler);
-        inputEngine.run();
-
-    } catch (const std::exception& e) {
-        std::cout << "Terminated: " << e.what() << std::endl;
-    }
-
-    return 0;
-}
+#endif

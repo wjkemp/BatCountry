@@ -23,7 +23,6 @@
 #define __GRAPHICSDEVICE_H__
 
 #include "canvas.h"
-#include <windows.h>
 
 
 //-----------------------------------------------------------------------------
@@ -35,11 +34,10 @@ class GraphicsDevice
 public:
     GraphicsDevice(int width, int height);
     ~GraphicsDevice();
-    void render(Canvas& canvas);
+    virtual void render(Canvas& canvas) = 0;
+    virtual bool closed() = 0;
 
-private:
-    HANDLE _outputHandle;
-    CHAR_INFO* _consoleBuffer;
+protected:
     int _width;
     int _height;
 

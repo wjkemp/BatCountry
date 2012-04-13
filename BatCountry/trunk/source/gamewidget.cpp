@@ -41,13 +41,14 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
     _gameState(sWaveIntro),
     _spawnTimer("spawn_timer"),
     _waveIntroTimer("wave_intro_timer"),
-    _enemyArea(-2, 2, 84, 8),
+    _enemyArea(-2, 10, 84, 12),
+    _worldRect(0, 0, 80, 40),
     _keystate(0),
-    _actor(Rect(0,0, 80, 25), _keystate),
+    _actor(_worldRect, _keystate),
     _spawnCount(0),
     _spawnTimeoutBase(3000),
     _spawnTimeout(3000),
-    _enemyVelocityBase(5.0),
+    _enemyVelocityBase(4.0),
     _overlay(IMG_OVERLAY)
 {
 
@@ -329,7 +330,7 @@ void GameWidget::spawnBullets()
                 _activeWeapon->fire(
                     Point(_actor.position().x(), _actor.position().y() - 1),
                     Weapon::Center,
-                    Rect(0, 0, 80, 25)));
+                    _worldRect));
 
             if (bullets.size()) {
                 _bullets.insert(_bullets.end(), bullets.begin(), bullets.end());
@@ -345,7 +346,7 @@ void GameWidget::spawnBullets()
                 _activeWeapon->fire(
                     Point(_actor.position().x(), _actor.position().y() - 1),
                     Weapon::Left,
-                    Rect(0, 0, 80, 25)));
+                    _worldRect));
 
             if (bullets.size()) {
                 _bullets.insert(_bullets.end(), bullets.begin(), bullets.end());
@@ -362,7 +363,7 @@ void GameWidget::spawnBullets()
                 _activeWeapon->fire(
                     Point(_actor.position().x(), _actor.position().y() - 1),
                     Weapon::Right,
-                    Rect(0, 0, 80, 25)));
+                    _worldRect));
 
             if (bullets.size()) {
                 _bullets.insert(_bullets.end(), bullets.begin(), bullets.end());
@@ -409,8 +410,10 @@ void GameWidget::updateBullets()
                 Enemy* enemy = *j;
 
                 // Check if the enemy is hit by either direct or radius damage
-                if ((bulletHasHit && bullet->hasRadiusDamage() && (bullet->position().distanceTo(enemy->position()) < bullet->damageRadius()) ||
-                    (enemy->boundingRect().contains(bullet->position())))) {
+                if ( 
+                    (bulletHasHit && bullet->hasRadiusDamage() && (bullet->position().distanceTo(enemy->position()) < bullet->damageRadius())) ||
+                    (enemy->boundingRect().contains(bullet->position()) || bullet->intersects(enemy->boundingRect()))
+                    ) {
 
                     // Damage the enemy
                     enemy->damage(bullet->damage());
@@ -533,11 +536,11 @@ void GameWidget::paintEvent(Canvas& canvas)
 {
     canvas.clear();
 
-    canvas.drawBitmap(_overlay, 0, 13);
+    canvas.drawBitmap(_overlay, 0, 28);
 
 
     if (_gameState == sWaveIntro) {
-        canvas.drawText("Get Ready!!!", 34, 4, COLOR_LIGHTYELLOW);
+        canvas.drawText("Get Ready!!!", 34, 12, COLOR_LIGHTYELLOW);
     }
 
 
@@ -567,7 +570,7 @@ void GameWidget::setNextWave()
     _spawnTimeout = _spawnTimeoutBase;
 
     // Speed up the enemies
-    _enemyVelocityBase += 1.0;
+    _enemyVelocityBase += 0.6;
 
     // Reset the intro timer
     _waveIntroTimer.reset();
@@ -581,45 +584,45 @@ void GameWidget::displayStatistics(Canvas& canvas)
 
     // Money
     sprintf_s(formatBuffer, sizeof(formatBuffer), "%d", _statistics.money());
-    canvas.drawText("Money:", 2, 21, COLOR_WHITE); 
-    canvas.drawText(formatBuffer, 12, 21, COLOR_WHITE); 
+    canvas.drawText("Money:", 2, 36, COLOR_WHITE); 
+    canvas.drawText(formatBuffer, 12, 36, COLOR_WHITE); 
 
     // Current Wave
     sprintf_s(formatBuffer, sizeof(formatBuffer), "%d", _statistics.currentWave());
-    canvas.drawText("Wave:", 2, 22, COLOR_WHITE); 
-    canvas.drawText(formatBuffer, 12, 22, COLOR_WHITE); 
+    canvas.drawText("Wave:", 2, 37, COLOR_WHITE); 
+    canvas.drawText(formatBuffer, 12, 37, COLOR_WHITE); 
 
     // Infestation
     sprintf_s(formatBuffer, sizeof(formatBuffer), "%d%%", _statistics.infestationPercentage());
-    canvas.drawText("Infested:", 2, 23, COLOR_WHITE);
-    canvas.drawText(formatBuffer, 12, 23, COLOR_WHITE); 
+    canvas.drawText("Infested:", 2, 38, COLOR_WHITE);
+    canvas.drawText(formatBuffer, 12, 38, COLOR_WHITE); 
 
 
     // Remaining
     sprintf_s(formatBuffer, sizeof(formatBuffer), "%d", _statistics.enemiesLeftInCurrentWave());
-    canvas.drawText("Remaining:", 20, 21, COLOR_WHITE); 
-    canvas.drawText(formatBuffer, 32, 21, COLOR_WHITE); 
+    canvas.drawText("Remaining:", 20, 36, COLOR_WHITE); 
+    canvas.drawText(formatBuffer, 32, 36, COLOR_WHITE); 
 
     // Killed
     sprintf_s(formatBuffer, sizeof(formatBuffer), "%d", _statistics.enemiesKilledInCurrentWave());
-    canvas.drawText("Killed:", 20, 22, COLOR_WHITE); 
-    canvas.drawText(formatBuffer, 32, 22, COLOR_WHITE); 
+    canvas.drawText("Killed:", 20, 37, COLOR_WHITE); 
+    canvas.drawText(formatBuffer, 32, 37, COLOR_WHITE); 
 
     // Escaped
     sprintf_s(formatBuffer, sizeof(formatBuffer), "%d", _statistics.enemiesEscapedInCurrentWave());
-    canvas.drawText("Escaped:", 20, 23, COLOR_WHITE); 
-    canvas.drawText(formatBuffer, 32, 23, COLOR_WHITE);
+    canvas.drawText("Escaped:", 20, 38, COLOR_WHITE); 
+    canvas.drawText(formatBuffer, 32, 38, COLOR_WHITE);
 
 
 
     const int weaponGrid[][3] =
     {
-        { 21, 40, 55 },
-        { 22, 40, 55 },
-        { 23, 40, 55 },
-        { 21, 60, 73 },
-        { 22, 60, 73 },
-        { 23, 60, 73 }
+        { 36, 40, 55 },
+        { 37, 40, 55 },
+        { 38, 40, 55 },
+        { 36, 60, 73 },
+        { 37, 60, 73 },
+        { 38, 60, 73 }
     };
 
 

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\source;d:\Libraries\DX10SDK\Include"
+				AdditionalIncludeDirectories="..\source;d:\Libraries\DX10SDK\Include;d:\Libraries\allegro\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib comctl32.lib dxerr.lib"
+				AdditionalDependencies="winmm.lib comctl32.lib allegro-5.0.6-mt-debug.lib allegro_image-5.0.6-mt-debug.lib allegro_audio-5.0.6-mt-debug.lib allegro_acodec-5.0.6-mt-debug.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="d:\Libraries\DX10SDK\Lib\x86"
+				AdditionalLibraryDirectories="d:\Libraries\DX10SDK\Lib\x86;d:\Libraries\Allegro\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\source;d:\Libraries\DX10SDK\Include"
+				AdditionalIncludeDirectories="..\source;d:\Libraries\DX10SDK\Include;d:\Libraries\allegro\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -136,9 +136,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib comctl32.lib dxerr.lib"
+				AdditionalDependencies="winmm.lib comctl32.lib allegro-5.0.6-mt.lib allegro_image-5.0.6-mt.lib allegro_audio-5.0.6-mt.lib allegro_acodec-5.0.6-mt.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="d:\Libraries\DX10SDK\Lib\x86"
+				AdditionalLibraryDirectories="d:\Libraries\DX10SDK\Lib\x86;d:\Libraries\Allegro\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -201,6 +201,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\fullscreenhandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\fullscreenhandler.h"
+				>
+			</File>
+			<File
 				RelativePath="..\source\gameoverwidget.cpp"
 				>
 			</File>
@@ -260,6 +268,22 @@
 				Name="sound"
 				>
 				<File
+					RelativePath="..\source\sound\allegroengine.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\sound\allegroengine.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\sound\allegrosource.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\sound\allegrosource.h"
+					>
+				</File>
+				<File
 					RelativePath="..\source\sound\audioengine.cpp"
 					>
 				</File>
@@ -269,22 +293,6 @@
 				</File>
 				<File
 					RelativePath="..\source\sound\audiosource.h"
-					>
-				</File>
-				<File
-					RelativePath="..\source\sound\wavefile.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\source\sound\wavefile.h"
-					>
-				</File>
-				<File
-					RelativePath="..\source\sound\xaudio2source.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\source\sound\xaudio2source.h"
 					>
 				</File>
 			</Filter>
@@ -420,6 +428,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\source\graphics\bitmapgraphicsdevice.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\graphics\bitmapgraphicsdevice.h"
+					>
+				</File>
+				<File
 					RelativePath="..\source\graphics\canvas.cpp"
 					>
 				</File>
@@ -429,6 +445,14 @@
 				</File>
 				<File
 					RelativePath="..\source\graphics\colors.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\graphics\consolegraphicsdevice.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\graphics\consolegraphicsdevice.h"
 					>
 				</File>
 				<File
@@ -515,6 +539,30 @@
 			<Filter
 				Name="input"
 				>
+				<File
+					RelativePath="..\source\input\allegroinputengine.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\input\allegroinputengine.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\input\consoleinputengine.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\input\consoleinputengine.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\input\inputengine.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\input\inputengine.h"
+					>
+				</File>
 				<File
 					RelativePath="..\source\input\inputhandler.cpp"
 					>

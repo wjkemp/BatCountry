@@ -1,4 +1,4 @@
-/*  bullet.cpp
+/*  inputengine.cpp
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,69 +19,66 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "bullet.h"
+#include "inputengine.h"
+
 
 
 //-----------------------------------------------------------------------------
-Bullet::Bullet(double x, double y, int damage, const Rect& activeRect, const Element& element) :
-    WorldObject((int)x, (int)y),
-    _x(x),
-    _y(y),
-    _state(sActive),
-    _damage(damage),
-    _activeRect(activeRect),
-    _element(element),
-    _updateTimer("bullet_update_timer")
+InputEngine::InputEngine()
 {
 
 }
 
 
 //-----------------------------------------------------------------------------
-Bullet::~Bullet()
+InputEngine::~InputEngine()
 {
 
 }
 
 
 //-----------------------------------------------------------------------------
-Rect Bullet::boundingRect() const
+void InputEngine::addInputHandler(InputHandler* handler)
 {
-    return Rect::centerAroundPoint(_position, 1, 1);
+    _inputHandlers.push_back(handler);
 }
 
 
 //-----------------------------------------------------------------------------
-void Bullet::render(Canvas& canvas)
+void InputEngine::keyEvent(int key, int flags)
 {
-    canvas.drawElement(_element, _position.x(), _position.y());
+    std::list<InputHandler*>::const_iterator i;
+    for (i = _inputHandlers.begin(); i != _inputHandlers.end(); ++i) {
+        InputHandler* handler(*i);
+        handler->keyEvent(key, flags);
+    }
 }
 
 
 //-----------------------------------------------------------------------------
-bool Bullet::hasRadiusDamage() const
+void InputEngine::updateEvent()
 {
-    return false;
+    std::list<InputHandler*>::const_iterator i;
+    for (i = _inputHandlers.begin(); i != _inputHandlers.end(); ++i) {
+        InputHandler* handler(*i);
+        handler->updateEvent();
+    }
 }
 
 
 //-----------------------------------------------------------------------------
-double Bullet::damageRadius() const
+bool InputEngine::closeRequested()
 {
-    return 0.0;
+    bool result = false;
+
+    std::list<InputHandler*>::const_iterator i;
+    for (i = _inputHandlers.begin(); i != _inputHandlers.end(); ++i) {
+        InputHandler* handler(*i);
+        if (handler->closeRequested()) {
+            result = true;
+            break;
+        }
+    }
+
+    return result;
 }
-
-
-//-----------------------------------------------------------------------------
-std::list<Particle*> Bullet::spawnResidue() const
-{
-    return std::list<Particle*>();
-}
-
-
-//-----------------------------------------------------------------------------
-bool Bullet::intersects(const Rect& rect) const
-{
-    return false;
-}
-

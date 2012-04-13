@@ -32,8 +32,9 @@ std::list<Timer*>* Timer::_timers = 0;
 Timer::Timer(const char* name)
 {
     _name = name;
-    assert(QueryPerformanceFrequency(&_frequency));
+    QueryPerformanceFrequency(&_frequency);
     QueryPerformanceCounter(&_time);
+
     _pausedMs = 0;
     assert(_time.QuadPart != 0);
 

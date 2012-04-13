@@ -22,7 +22,6 @@
 #ifndef __AUDIOENGINE_H__
 #define __AUDIOENGINE_H__
 
-#include <xaudio2.h>
 #include "audiosource.h"
 #include <string>
 
@@ -34,16 +33,14 @@ class AudioEngine
 {
 public:
     static AudioEngine* instance();
-    AudioSource* createSource(const std::wstring& filename);
-    void setVolume(int volume);
+    virtual AudioSource* createSource(const std::wstring& filename) = 0;
+    virtual void setVolume(int volume) = 0;
 
-private:
-    AudioEngine();
+protected:
+    AudioEngine() {}
 
 private:
     static AudioEngine* _instance;
-    IXAudio2* _engine;
-    IXAudio2MasteringVoice* _masteringVoice;
 
 };
 

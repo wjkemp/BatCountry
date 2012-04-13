@@ -1,4 +1,4 @@
-/*  main.cpp
+/*  allegrosource.cpp
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,38 +19,32 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "basewidget.h"
-#include "graphics/widgetstack.h"
-#include "graphics/bitmapgraphicsdevice.h"
-#include "input/allegroinputengine.h"
-#include "fullscreenhandler.h"
-#include <iostream>
-
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_image.h>
+#include "allegrosource.h"
+#include "allegroengine.h"
 
 
 //-----------------------------------------------------------------------------
-int main(int argc, char* argv[])
+AllegroSource::AllegroSource(AllegroEngine* engine, ALLEGRO_SAMPLE* sample) :
+    _engine(engine),
+    _sample(sample)
 {
-    al_init();
-    al_init_image_addon();
 
-
-    try {
-
-        AllegroInputEngine inputEngine;
-        WidgetStack widgetStack;        
-        BaseWidget baseWidget(&widgetStack);
-        FullscreenHandler fullscreenHandler(&widgetStack);
-
-        inputEngine.addInputHandler(&widgetStack);
-        inputEngine.addInputHandler(&fullscreenHandler);
-        inputEngine.run();
-
-    } catch (const std::exception& e) {
-        std::cout << "Terminated: " << e.what() << std::endl;
-    }
-
-    return 0;
 }
+
+
+//-----------------------------------------------------------------------------
+AllegroSource::~AllegroSource()
+{
+
+
+}
+
+
+//-----------------------------------------------------------------------------
+void AllegroSource::play()
+{
+    if (_sample) {
+        al_play_sample(_sample, _engine->gain(), 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+    }
+}
+

@@ -1,4 +1,4 @@
-/*  main.cpp
+/*  allegroengine.cpp
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,38 +19,34 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "basewidget.h"
-#include "graphics/widgetstack.h"
-#include "graphics/bitmapgraphicsdevice.h"
-#include "input/allegroinputengine.h"
-#include "fullscreenhandler.h"
-#include <iostream>
-
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_image.h>
+#include "allegroengine.h"
+#include "allegrosource.h"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 
 //-----------------------------------------------------------------------------
-int main(int argc, char* argv[])
+AllegroEngine::AllegroEngine() :
+    _gain(0.5)
 {
-    al_init();
-    al_init_image_addon();
+    al_install_audio();
+    al_init_acodec_addon();
+    al_reserve_samples(12);
+}
 
 
-    try {
+//-----------------------------------------------------------------------------
+void AllegroEngine::setVolume(int volume)
+{
+    _gain = (float)volume / 100.0f;
+}
 
-        AllegroInputEngine inputEngine;
-        WidgetStack widgetStack;        
-        BaseWidget baseWidget(&widgetStack);
-        FullscreenHandler fullscreenHandler(&widgetStack);
 
-        inputEngine.addInputHandler(&widgetStack);
-        inputEngine.addInputHandler(&fullscreenHandler);
-        inputEngine.run();
-
-    } catch (const std::exception& e) {
-        std::cout << "Terminated: " << e.what() << std::endl;
-    }
-
-    return 0;
+//-----------------------------------------------------------------------------
+AudioSource* AllegroEngine::createSource(const std::wstring& filename)
+{
+    std::string tmp;
+    tmp.assign(filename.begin(), filename.end());
+    ALLEGRO_SAMPLE* sample = al_load_sample(tmp.c_str());
+    return new AllegroSource(this, sample);
 }

@@ -1,4 +1,4 @@
-/*  bullet.h
+/*  consoleinputengine.h
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,59 +19,59 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#ifndef __BULLET_H__
-#define __BULLET_H__
+#ifndef __CONSOLEINPUTENGINE_H__
+#define __CONSOLEINPUTENGINE_H__
 
-#include "worldobject.h"
-#include "graphics/element.h"
-#include "utilities/timer.h"
-#include "particle.h"
-#include <list>
+#include "inputengine.h"
+#include <windows.h>
 
 
 
 //-----------------------------------------------------------------------------
 //  Class Definition
 //-----------------------------------------------------------------------------
-class Bullet : public WorldObject
+class ConsoleInputEngine : public InputEngine
 {
 public:
-    enum State
+
+    enum Keys
     {
-        sActive,
-        sExpired
+        KEY_UP      = 0x26,
+        KEY_DOWN    = 0x28,
+        KEY_LEFT    = 0x25,
+        KEY_RIGHT   = 0x27,
+        KEY_SPACE   = 0x20,
+        KEY_ENTER   = 0x0D,
+        KEY_ESCAPE  = 0x1B,
+        KEY_1       = 0x31,
+        KEY_2       = 0x32,
+        KEY_3       = 0x33,
+        KEY_4       = 0x34,
+        KEY_5       = 0x35,
+        KEY_6       = 0x36,
+        KEY_7       = 0x37,
+        KEY_8       = 0x38,
+        KEY_9       = 0x39,
+        KEY_Z       = 0x5A,
+        KEY_X       = 0x58,
+        KEY_C       = 0x43
     };
 
+    enum Flags
+    {
+        fKeyDown    = 0x00000001,
+        fKeyUp      = 0x00000002
+    };
 
 public:
-    Bullet(
-        double x,
-        double y,
-        int damage,
-        const Rect& activeRect,
-        const Element& element);
-    virtual ~Bullet();
+    ConsoleInputEngine();
+    virtual ~ConsoleInputEngine();
+    void run();
 
-    State state() const { return _state; }
-    int damage() const { return _damage; }
-
-    Rect boundingRect() const;
-    void render(Canvas& canvas);
-
-    virtual bool hasRadiusDamage() const;
-    virtual double damageRadius() const;
-    virtual std::list<Particle*> spawnResidue() const;
-    virtual bool intersects(const Rect& rect) const;
-    
-    
-protected:
-    double _x;
-    double _y;
-    State _state;
-    int _damage;
-    Rect _activeRect;
-    Element _element;
-    Timer _updateTimer;
+private:
+    static const int EVENT_BUFFER_SIZE = 512;
+    HANDLE _inputHandle;
+    INPUT_RECORD* _eventBuffer;
 
 };
 

@@ -1,4 +1,4 @@
-/*  bullet.cpp
+/*  fullscreenhandler.cpp
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,69 +19,53 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "bullet.h"
+#include "fullscreenhandler.h"
 
 
 //-----------------------------------------------------------------------------
-Bullet::Bullet(double x, double y, int damage, const Rect& activeRect, const Element& element) :
-    WorldObject((int)x, (int)y),
-    _x(x),
-    _y(y),
-    _state(sActive),
-    _damage(damage),
-    _activeRect(activeRect),
-    _element(element),
-    _updateTimer("bullet_update_timer")
+FullscreenHandler::FullscreenHandler(WidgetStack* widgetStack) :
+    _widgetStack(widgetStack),
+    _fullscreen(false)
+{
+    _graphicsDevice = new BitmapGraphicsDevice(80, 40, _fullscreen);
+    _widgetStack->setGraphicsDevice(_graphicsDevice);
+
+}
+
+
+//-----------------------------------------------------------------------------
+FullscreenHandler::~FullscreenHandler()
+{
+}
+
+
+//-----------------------------------------------------------------------------
+void FullscreenHandler::keyEvent(int key, int flags)
+{
+
+    if ((key == InputHandler::KEY_F11) && (flags == InputHandler::fKeyDown)) {
+        _widgetStack->setGraphicsDevice(0);
+        delete _graphicsDevice;
+
+        _fullscreen = !_fullscreen;
+        
+        _graphicsDevice = new BitmapGraphicsDevice(80, 40, _fullscreen);
+        _widgetStack->setGraphicsDevice(_graphicsDevice);
+    }
+
+}
+
+
+//-----------------------------------------------------------------------------
+void FullscreenHandler::updateEvent()
 {
 
 }
 
 
 //-----------------------------------------------------------------------------
-Bullet::~Bullet()
+bool FullscreenHandler::closeRequested()
 {
 
-}
-
-
-//-----------------------------------------------------------------------------
-Rect Bullet::boundingRect() const
-{
-    return Rect::centerAroundPoint(_position, 1, 1);
-}
-
-
-//-----------------------------------------------------------------------------
-void Bullet::render(Canvas& canvas)
-{
-    canvas.drawElement(_element, _position.x(), _position.y());
-}
-
-
-//-----------------------------------------------------------------------------
-bool Bullet::hasRadiusDamage() const
-{
     return false;
 }
-
-
-//-----------------------------------------------------------------------------
-double Bullet::damageRadius() const
-{
-    return 0.0;
-}
-
-
-//-----------------------------------------------------------------------------
-std::list<Particle*> Bullet::spawnResidue() const
-{
-    return std::list<Particle*>();
-}
-
-
-//-----------------------------------------------------------------------------
-bool Bullet::intersects(const Rect& rect) const
-{
-    return false;
-}
-

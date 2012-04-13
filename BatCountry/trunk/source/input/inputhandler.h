@@ -53,7 +53,9 @@ public:
         KEY_9       = 0x39,
         KEY_Z       = 0x5A,
         KEY_X       = 0x58,
-        KEY_C       = 0x43
+        KEY_C       = 0x43,
+
+        KEY_F11     = 0x7A
     };
 
     enum Flags
@@ -63,16 +65,9 @@ public:
     };
 
 public:
-    InputHandler();
-    virtual ~InputHandler();
-    void run();
     virtual void keyEvent(int key, int flags) = 0;
     virtual void updateEvent() = 0;
-
-private:
-    static const int EVENT_BUFFER_SIZE = 512;
-    HANDLE _inputHandle;
-    INPUT_RECORD* _eventBuffer;
+    virtual bool closeRequested() = 0;
 
 };
 

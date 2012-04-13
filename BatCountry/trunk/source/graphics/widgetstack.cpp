@@ -24,8 +24,9 @@
 
 //-----------------------------------------------------------------------------
 WidgetStack::WidgetStack() :
-    _graphicsDevice(80, 25),
-    _canvas(80, 25)
+    _graphicsDevice(0),
+    _canvas(80, 40),
+    _renderTimer("render_timer")
 {
 
 }
@@ -35,6 +36,13 @@ WidgetStack::WidgetStack() :
 WidgetStack::~WidgetStack()
 {
 
+}
+
+
+//-----------------------------------------------------------------------------
+void WidgetStack::setGraphicsDevice(GraphicsDevice* graphicsDevice)
+{
+    _graphicsDevice = graphicsDevice;
 }
 
 
@@ -59,6 +67,19 @@ void WidgetStack::keyEvent(int key, int flags)
     if (widget) {
         widget->keyEvent(key, flags);
     }
+}
+
+
+//-----------------------------------------------------------------------------
+bool WidgetStack::closeRequested()
+{
+    bool result = false;
+
+    if (_graphicsDevice) {
+        result = _graphicsDevice->closed();
+    }
+
+    return result;
 }
 
 
@@ -106,6 +127,11 @@ void WidgetStack::updateEvent()
         }
     }
 
-    _graphicsDevice.render(_canvas);
+
+    if (_graphicsDevice) {
+        _renderTimer.reset();
+        _graphicsDevice->render(_canvas);
+        double elapsed = _renderTimer.elapsed();
+    }
 
 }

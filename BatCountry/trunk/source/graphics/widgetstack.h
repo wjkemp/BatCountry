@@ -25,6 +25,7 @@
 #include "graphics/graphicsdevice.h"
 #include "graphics/canvas.h"
 #include "input/inputhandler.h"
+#include "utilities/timer.h"
 #include "widget.h"
 
 
@@ -37,17 +38,20 @@ class WidgetStack : public InputHandler
 public:
     WidgetStack();
     ~WidgetStack();
+    void setGraphicsDevice(GraphicsDevice* graphicsDevice);
     void pushWidget(Widget* widget);
     void popWidget(Widget* widget);
 
 protected:
     void keyEvent(int key, int flags);
     void updateEvent();
+    bool closeRequested();
 
 private:
-    GraphicsDevice _graphicsDevice;
+    GraphicsDevice* _graphicsDevice;
     Canvas _canvas;
     std::list<Widget*> _stack;
+    Timer _renderTimer;
 
 };
 
@@ -58,7 +62,7 @@ private:
        Events are processed as they arrive.
     2. Update Events. All widgets are updated, bottom to top.
     3. Paint events. All widgets are painted, bottom to top.
-    4. Notifications. All queued notifications are passed to widgets, from top to botto.
+    4. Notifications. All queued notifications are passed to widgets, from top to bottom.
 */
 
 #endif
