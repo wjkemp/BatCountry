@@ -1,4 +1,4 @@
-/*  random.cpp
+/*  modifier.cpp
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,49 +19,67 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "random.h"
-#include <stdlib.h>
+#include "modifier.h"
 
 
 //-----------------------------------------------------------------------------
-double Random::random()
+Modifier::Modifier()
 {
-    return ((double)rand() / (double)RAND_MAX);
+    _id = (Identifier)(rand() % MaxModifiers);
 }
 
 
 //-----------------------------------------------------------------------------
-int Random::random(int scale)
+Modifier::Modifier(Identifier id) :
+    _id(id)
 {
-    return (int)(random() * scale);
+
 }
 
 
 //-----------------------------------------------------------------------------
-bool Random::choice()
+Modifier::Modifier(const Modifier& obj) :
+    _id(obj._id)
 {
-    return (random() > 0.5);
+
 }
 
 
 //-----------------------------------------------------------------------------
-bool Random::choice(double probability)
+Modifier::~Modifier()
 {
-    return (random() <= probability);
+
 }
 
 
 //-----------------------------------------------------------------------------
-double Random::randomAngle(double initial, double deviation)
+Modifier::Identifier Modifier::id() const
 {
-    // Random deviation
-    double randomDeviation = (random() * deviation);
-    if (choice()) {
-        randomDeviation *= -1;
-    }
+    return _id;
+}
 
-    // Scale
-    double radians = (((initial + randomDeviation) * (2.0 * 3.141)) / 360.0);
 
-    return -radians;
+//-----------------------------------------------------------------------------
+Element Modifier::getElement() const
+{
+    switch (_id) {
+        case mInfiniBullets: return Element(236, COLOR_LIGHTAQUA);
+        case mFireBullets: return Element('!', COLOR_LIGHTYELLOW);
+        case mBoost: return Element('+', COLOR_LIGHTGREEN);
+        case mNuke: return Element(6, COLOR_LIGHTRED);
+        default: return Element('?', COLOR_RED);
+    }    
+}
+
+
+//-----------------------------------------------------------------------------
+const char* Modifier::getModifierName() const
+{
+    switch (_id) {
+        case mInfiniBullets: return "InfiniBullets";
+        case mFireBullets: return "Fire Bullets";
+        case mBoost: return "Boost";
+        case mNuke: return "Nuke";
+        default: return "?";
+    }        
 }

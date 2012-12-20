@@ -44,7 +44,7 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
     _enemyArea(-2, 10, 84, 12),
     _worldRect(0, 0, 80, 40),
     _keystate(0),
-    _actor(_worldRect, _keystate),
+    _actor(&_modifiers, _worldRect, _keystate),
     _spawnCount(0),
     _spawnTimeoutBase(3000),
     _spawnTimeout(3000),
@@ -54,13 +54,15 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
 
    _sndBatHit = AudioEngine::instance()->createSource(L"./resources/audio/hit.wav");
    _sndExplode = AudioEngine::instance()->createSource(L"./resources/audio/explosion.wav");
+   _sndPickup = AudioEngine::instance()->createSource(L"./resources/audio/pickup.wav");
+   _sndNuke = AudioEngine::instance()->createSource(L"./resources/audio/nuke.wav");
 
-   _weapons.push_back(new Pistol());
-   _weapons.push_back(new Machinegun());
-   _weapons.push_back(new Rifle());
-   _weapons.push_back(new Shotgun());
-   _weapons.push_back(new RocketLauncher());
-   _weapons.push_back(new GrenadeLauncher());
+   _weapons.push_back(new Pistol(&_modifiers));
+   _weapons.push_back(new Machinegun(&_modifiers));
+   _weapons.push_back(new Rifle(&_modifiers));
+   _weapons.push_back(new Shotgun(&_modifiers));
+   _weapons.push_back(new RocketLauncher(&_modifiers));
+   _weapons.push_back(new GrenadeLauncher(&_modifiers));
    _activeWeapon = _weapons[WEAPON_PISTOL];
    _activeWeapon->buyItem();
 
@@ -81,6 +83,8 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
     _optionsWidget = new OptionsWidget(widgetStack);
     _optionsWidget->addNotificationListener(this);
 
+    _itemDropFactory = new ItemDropFactory();
+
 
    _renderList.push_back(&_actor);
 
@@ -91,6 +95,7 @@ GameWidget::GameWidget(WidgetStack* widgetStack) :
 //-----------------------------------------------------------------------------
 GameWidget::~GameWidget()
 {
+    delete _itemDropFactory;
 }
 
 
@@ -248,6 +253,8 @@ void GameWidget::updateEvent()
         updateActor();
         updateBullets();
         updateParticles();
+        updateItemDrops();
+        _modifiers.update();
     }
 }
 
@@ -439,6 +446,13 @@ void GameWidget::updateBullets()
                         _particles.insert(_particles.end(), particles.begin(), particles.end());
                         _renderList.insert(_renderList.end(), particles.begin(), particles.end());
 
+                        // Spawn item drop
+                        ItemDrop* itemDrop = _itemDropFactory->createDrop(enemy->position().x(), enemy->position().y());
+                        if (itemDrop) {
+                            _itemDrops.push_back(itemDrop);
+                            _renderList.push_back(itemDrop);
+                        }
+
                         // Add money
                         _statistics.giveMoney(enemy->reward());
 
@@ -454,7 +468,9 @@ void GameWidget::updateBullets()
 
 
                     // Remove the bullet
-                    removeBullet = true;
+                    if (!bullet->isPenetrating()) {
+                        removeBullet = true;
+                    }
 
                     // If the bullet does not do radius damage, break
                     if (!bullet->hasRadiusDamage()) {
@@ -532,6 +548,45 @@ void GameWidget::updateParticles()
 
 
 //-----------------------------------------------------------------------------
+void GameWidget::updateItemDrops()
+{
+    // Update the item drops
+    std::list<ItemDrop*>::const_iterator l = _itemDrops.begin();
+    while (l != _itemDrops.end()) {
+        ItemDrop* itemDrop = *l;
+        itemDrop->update();
+
+        // Check for an expired item
+        if (itemDrop->state() == ItemDrop::sExpired) {
+            l = _itemDrops.erase(l);
+            _renderList.remove(itemDrop);
+            delete itemDrop;
+
+        // Check for a pickup
+        } else if (itemDrop->boundingRect().contains(_actor.position())) {
+
+            // Special case for nuke
+            if (itemDrop->modifier().id() == Modifier::mNuke) {
+                _sndNuke->play();
+                nukeEverything();
+
+            } else {
+                _sndPickup->play();
+                _modifiers.addModifier(itemDrop->modifier());
+            }
+
+            l = _itemDrops.erase(l);
+            _renderList.remove(itemDrop);
+            delete itemDrop;
+        
+        } else {
+            ++l;
+        }
+    }
+}
+
+
+//-----------------------------------------------------------------------------
 void GameWidget::paintEvent(Canvas& canvas)
 {
     canvas.clear();
@@ -550,7 +605,7 @@ void GameWidget::paintEvent(Canvas& canvas)
         obj->render(canvas);
     }
 
-
+    _modifiers.drawModifierList(canvas);
     displayStatistics(canvas);
 
 }
@@ -574,6 +629,35 @@ void GameWidget::setNextWave()
 
     // Reset the intro timer
     _waveIntroTimer.reset();
+}
+
+
+//-----------------------------------------------------------------------------
+void GameWidget::nukeEverything()
+{
+    std::list<Enemy*>::const_iterator i = _enemies.begin();
+    while (i != _enemies.end()) {
+        Enemy* enemy = *i;
+
+        // Do some serious damage (for velocity on the particles)
+        enemy->damage(7);
+
+        // Spawn particles
+        std::list<Particle*> particles(enemy->spawnParticles());
+        _particles.insert(_particles.end(), particles.begin(), particles.end());
+        _renderList.insert(_renderList.end(), particles.begin(), particles.end());
+
+        // No item drops spawned on nukes
+
+        // Add money
+        _statistics.giveMoney(enemy->reward());
+
+        // Kill the enemy
+        i = _enemies.erase(i);
+        _renderList.remove(enemy);
+        _statistics.addEnemiesKilled(1);
+        delete enemy;
+    }
 }
 
 

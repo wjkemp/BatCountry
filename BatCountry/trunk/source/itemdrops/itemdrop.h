@@ -1,4 +1,4 @@
-/*  bullet.h
+/*  itemdrop.h
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,60 +19,62 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#ifndef __BULLET_H__
-#define __BULLET_H__
+#ifndef __ITEMDROP_H__
+#define __ITEMDROP_H__
 
 #include "worldobject.h"
+#include "modifiers/modifier.h"
 #include "graphics/element.h"
 #include "utilities/timer.h"
-#include "particle.h"
-#include <list>
 
 
 
 //-----------------------------------------------------------------------------
 //  Class Definition
 //-----------------------------------------------------------------------------
-class Bullet : public WorldObject
+class ItemDrop : public WorldObject
 {
 public:
+
     enum State
     {
-        sActive,
+        sDropping,
+        sStationary,
         sExpired
     };
 
-
 public:
-    Bullet(
-        double x,
-        double y,
-        int damage,
-        const Rect& activeRect,
-        const Element& element);
-    virtual ~Bullet();
+    ItemDrop(
+        int x,
+        int y,
+        double angle,
+        double velocity,
+        const Modifier& modifier,
+        const Element& element,
+        const Rect& worldRect);
+    ~ItemDrop();
 
-    State state() const { return _state; }
-    int damage() const { return _damage; }
-
+    Modifier modifier() const;
     Rect boundingRect() const;
+    void update();
     void render(Canvas& canvas);
+    State state() const { return _state; }
 
-    virtual bool isPenetrating() const;
-    virtual bool hasRadiusDamage() const;
-    virtual double damageRadius() const;
-    virtual std::list<Particle*> spawnResidue() const;
-    virtual bool intersects(const Rect& rect) const;
-    
-    
-protected:
+private:
     double _x;
     double _y;
-    State _state;
-    int _damage;
-    Rect _activeRect;
+    double _velocityX;
+    double _velocityY;
+    double _gravity;
+    double _velocity;
+    double _angle;
+
+    Modifier _modifier;
     Element _element;
+    Rect _worldRect;
+    State _state;
     Timer _updateTimer;
+    Timer _activeTimer;
 
 };
 

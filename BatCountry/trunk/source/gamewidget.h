@@ -34,6 +34,8 @@
 #include "sound/audiosource.h"
 #include "weapons/weapon.h"
 #include "options/optionswidget.h"
+#include "itemdrops/itemdropfactory.h"
+#include "modifiers/modifiermanager.h"
 #include <list>
 #include <vector>
 
@@ -72,7 +74,9 @@ public:
     void updateBullets();
     void updateEnemies();
     void updateParticles();
+    void updateItemDrops();
     void setNextWave();
+    void nukeEverything();
     void displayStatistics(Canvas& canvas);
 
 private:
@@ -88,6 +92,7 @@ private:
 
 private:
     GameStatistics _statistics;
+    ModifierManager _modifiers;
     Rect _worldRect;
     Rect _enemyArea;
     std::vector<Weapon*> _weapons;
@@ -95,11 +100,14 @@ private:
     std::list<Bullet*> _bullets;
     std::list<Enemy*> _enemies;
     std::list<Particle*> _particles;
+    std::list<ItemDrop*> _itemDrops;
     std::list<WorldObject*> _renderList;
     Actor _actor;
     BuyWidget* _buyWidget;
     GameOverWidget* _gameOverWidget;
     OptionsWidget* _optionsWidget;
+
+    ItemDropFactory* _itemDropFactory;
 
     int _enemiesToSpawn;
     int _spawnCount;
@@ -116,6 +124,8 @@ private:
 
     AudioSource* _sndBatHit;
     AudioSource* _sndExplode;
+    AudioSource* _sndPickup;
+    AudioSource* _sndNuke;
 
 };
 

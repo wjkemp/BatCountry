@@ -26,7 +26,9 @@
 WidgetStack::WidgetStack() :
     _graphicsDevice(0),
     _canvas(80, 40),
-    _renderTimer("render_timer")
+    _renderTimer("render_timer"),
+    _frameRate(0.0),
+    _frameCounter(0)
 {
 
 }
@@ -132,6 +134,14 @@ void WidgetStack::updateEvent()
         _renderTimer.reset();
         _graphicsDevice->render(_canvas);
         double elapsed = _renderTimer.elapsed();
+        _frameRate += (1.0 / elapsed);
+        _frameCounter++;
+
+        if (_frameCounter == 100) {
+          printf("FPS: %f\n", _frameRate / _frameCounter);
+          _frameRate = 0;
+          _frameCounter = 0;
+        }
     }
 
 }

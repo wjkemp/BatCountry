@@ -25,8 +25,8 @@
 
 
 //-----------------------------------------------------------------------------
-Rifle::Rifle() :
-    Weapon(0.4)
+Rifle::Rifle(ModifierManager* modifiers) :
+    Weapon(modifiers, 0.4)
 {
     _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/rifle.wav");
 }
@@ -43,6 +43,7 @@ Rifle::~Rifle()
 std::vector<Bullet*> Rifle::fire(Point position, Direction direction, Rect boundingArea)
 {
     std::vector<Bullet*> bullets;
+    bool penetrating = _modifiers->isModifierActive(Modifier::mFireBullets);
 
     if (canFire()) {
 
@@ -52,24 +53,27 @@ std::vector<Bullet*> Rifle::fire(Point position, Direction direction, Rect bound
 
                 double degrees = 135;
                 double radians = -((degrees * 2.0 * 3.141) / 360.0);
-                bullets.push_back(new GenericBullet(position.x(), position.y(), cos(radians), sin(radians), 5, 100, boundingArea, Element('\\', COLOR_WHITE)));
+                bullets.push_back(new GenericBullet(position.x(), position.y(), cos(radians), sin(radians), 5, 100, penetrating, boundingArea, Element('\\', COLOR_WHITE)));
             } break;
 
             case Right: {
                 double degrees = 45;
                 double radians = -((degrees * 2.0 * 3.141) / 360.0);
-                bullets.push_back(new GenericBullet(position.x(), position.y(), cos(radians), sin(radians), 5, 100, boundingArea, Element('/', COLOR_WHITE)));
+                bullets.push_back(new GenericBullet(position.x(), position.y(), cos(radians), sin(radians), 5, 100, penetrating, boundingArea, Element('/', COLOR_WHITE)));
             } break;
 
             case Center: {
                 double degrees = 90;
                 double radians = -((degrees * 2.0 * 3.14159265) / 360.0);
-                bullets.push_back(new GenericBullet(position.x(), position.y(), cos(radians), sin(radians), 5, 100, boundingArea, Element('|', COLOR_WHITE)));
+                bullets.push_back(new GenericBullet(position.x(), position.y(), cos(radians), sin(radians), 5, 100, penetrating, boundingArea, Element('|', COLOR_WHITE)));
             } break;
 
         }
 
-        _ammunition--;
+        if (!_modifiers->isModifierActive(Modifier::mInfiniBullets)) {
+            _ammunition--;
+        }
+
         _fireSound->play();
         resetCooldownTimer();
     }

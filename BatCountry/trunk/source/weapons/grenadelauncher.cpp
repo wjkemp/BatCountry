@@ -26,8 +26,8 @@
 
 
 //-----------------------------------------------------------------------------
-GrenadeLauncher::GrenadeLauncher() :
-    Weapon(0.6)
+GrenadeLauncher::GrenadeLauncher(ModifierManager* modifiers) :
+    Weapon(modifiers, 0.6)
 {
     _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/grenadelauncher.wav");
 }
@@ -65,7 +65,11 @@ std::vector<Bullet*> GrenadeLauncher::fire(Point position, Direction direction, 
         }
 
         if (direction != Center) {
-            _ammunition--;
+
+            if (!_modifiers->isModifierActive(Modifier::mInfiniBullets)) {
+                _ammunition--;
+            }
+
             _fireSound->play();
             resetCooldownTimer();
         }

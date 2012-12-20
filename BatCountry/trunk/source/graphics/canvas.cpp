@@ -87,3 +87,23 @@ void Canvas::drawText(const char* text, int x, int y, Color color)
         x++;
     }
 }
+
+
+//-----------------------------------------------------------------------------
+void Canvas::drawRtlText(const char* text, int x, int y, Color color)
+{
+    const char* ptr = text;
+    while (*ptr) {
+        ptr++;
+    }
+
+    do {
+        ptr--;
+        if ((x < _width) && (y < _height) && (x >= 0) && (y >= 0)) {
+            _buffer[x + (y * _width)] = *ptr | (color << 8);
+        }
+        x--;
+
+    } while (text != ptr);
+}
+

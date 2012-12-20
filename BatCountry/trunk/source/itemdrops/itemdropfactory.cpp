@@ -1,4 +1,4 @@
-/*  actor.h
+/*  itemdropfactory.cpp
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,40 +19,41 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#ifndef __ACTOR_H__
-#define __ACTOR_H__
-
-#include "worldobject.h"
-#include "graphics/bitmap.h"
-#include "utilities/timer.h"
-#include "input/keystate.h"
-#include "modifiers/modifiermanager.h"
-
+#include "itemdropfactory.h"
+#include "utilities/random.h"
 
 
 //-----------------------------------------------------------------------------
-//  Class Definition
-//-----------------------------------------------------------------------------
-class Actor : public WorldObject
+ItemDropFactory::ItemDropFactory()
 {
 
-public:
-    Actor(ModifierManager* modifiers, const Rect& area, unsigned long& keystate);
-    ~Actor();
-
-    Rect boundingRect() const;
-    void update();
-    void render(Canvas& canvas);
-
-private:
-    ModifierManager* _modifiers;
-    Rect _area;
-    Bitmap _image;
-    Timer _movementTimer;
-    unsigned long& _keystate;
-
-};
+}
 
 
+//-----------------------------------------------------------------------------
+ItemDropFactory::~ItemDropFactory()
+{
 
-#endif
+}
+
+
+//-----------------------------------------------------------------------------
+ItemDrop* ItemDropFactory::createDrop(int x, int y)
+{
+    ItemDrop* result = 0;
+    double velocity = 0.8;
+
+    if (Random::choice(0.2)) {
+
+        // Create random modifier
+        Modifier modifier;
+
+        // Create element
+        Element element(modifier.getElement());
+
+        // Create item drop
+        result = new ItemDrop(x, y, Random::randomAngle(90, 70), velocity, modifier, element, Rect(0,0, 80, 34));
+    }
+
+    return result;
+}

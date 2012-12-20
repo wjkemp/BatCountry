@@ -26,8 +26,8 @@
 
 
 //-----------------------------------------------------------------------------
-RocketLauncher::RocketLauncher() :
-    Weapon(0.8)
+RocketLauncher::RocketLauncher(ModifierManager* modifiers) :
+    Weapon(modifiers, 0.8)
 {
     _fireSound = AudioEngine::instance()->createSource(L"./resources/audio/rocketlauncher.wav");
 }
@@ -70,7 +70,10 @@ std::vector<Bullet*> RocketLauncher::fire(Point position, Direction direction, R
 
         }
 
-        _ammunition--;
+        if (!_modifiers->isModifierActive(Modifier::mInfiniBullets)) {
+            _ammunition--;
+        }
+
         _fireSound->play();
         resetCooldownTimer();
     }

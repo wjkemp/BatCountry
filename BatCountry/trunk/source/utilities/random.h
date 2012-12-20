@@ -33,6 +33,7 @@ public:
     static double random();
     static int random(int scale);
     static bool choice();
+    static bool choice(double probability);
     static double randomAngle(double initial, double deviation);
 };
 

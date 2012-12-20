@@ -33,7 +33,7 @@ class RocketLauncher : public Weapon
 {
 
 public:
-    RocketLauncher();
+    RocketLauncher(ModifierManager* modifiers);
     ~RocketLauncher();
     std::string fullName() const            { return "Rocket Launcher"; }
     std::string shortName() const           { return "Rockets"; }

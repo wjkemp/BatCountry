@@ -59,6 +59,13 @@ void Bullet::render(Canvas& canvas)
 
 
 //-----------------------------------------------------------------------------
+bool Bullet::isPenetrating() const
+{
+    return false;
+}
+
+
+//-----------------------------------------------------------------------------
 bool Bullet::hasRadiusDamage() const
 {
     return false;

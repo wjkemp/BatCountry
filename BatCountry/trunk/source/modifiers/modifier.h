@@ -1,4 +1,4 @@
-/*  bullet.h
+/*  modifier.h
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,61 +19,40 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#ifndef __BULLET_H__
-#define __BULLET_H__
+#ifndef __MODIFIER_H__
+#define __MODIFIER_H__
 
-#include "worldobject.h"
-#include "graphics/element.h"
 #include "utilities/timer.h"
-#include "particle.h"
-#include <list>
-
+#include "graphics/element.h"
 
 
 //-----------------------------------------------------------------------------
 //  Class Definition
 //-----------------------------------------------------------------------------
-class Bullet : public WorldObject
+class Modifier
 {
 public:
-    enum State
+
+    enum Identifier
     {
-        sActive,
-        sExpired
+        mInfiniBullets,
+        mFireBullets,
+        mBoost,
+        mNuke,
+        MaxModifiers
     };
 
-
 public:
-    Bullet(
-        double x,
-        double y,
-        int damage,
-        const Rect& activeRect,
-        const Element& element);
-    virtual ~Bullet();
+    Modifier();
+    Modifier(Identifier id);
+    Modifier(const Modifier& obj);
+    ~Modifier();
+    Identifier id() const;
+    Element getElement() const;
+    const char* getModifierName() const;
 
-    State state() const { return _state; }
-    int damage() const { return _damage; }
-
-    Rect boundingRect() const;
-    void render(Canvas& canvas);
-
-    virtual bool isPenetrating() const;
-    virtual bool hasRadiusDamage() const;
-    virtual double damageRadius() const;
-    virtual std::list<Particle*> spawnResidue() const;
-    virtual bool intersects(const Rect& rect) const;
-    
-    
-protected:
-    double _x;
-    double _y;
-    State _state;
-    int _damage;
-    Rect _activeRect;
-    Element _element;
-    Timer _updateTimer;
-
+private:
+    Identifier _id;
 };
 
 

@@ -30,6 +30,7 @@ GenericBullet::GenericBullet(
     double directionY,
     int damage,
     double velocity,
+    bool penetrating,
     const Rect& activeRect,
     const Element& element) :
     Bullet(x, y, damage, activeRect, element),
@@ -37,7 +38,8 @@ GenericBullet::GenericBullet(
     _y0(y),
     _directionX(directionX),
     _directionY(directionY),
-    _velocity(velocity)
+    _velocity(velocity),
+    _penetrating(penetrating)
 {
 
 }
@@ -71,6 +73,13 @@ void GenericBullet::update()
 
         _updateTimer.reset();
     }
+}
+
+
+//-----------------------------------------------------------------------------
+bool GenericBullet::isPenetrating() const
+{
+    return _penetrating;
 }
 
 

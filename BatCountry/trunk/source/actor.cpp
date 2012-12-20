@@ -25,8 +25,9 @@
 
 
 //-----------------------------------------------------------------------------
-Actor::Actor(const Rect& area, unsigned long& keystate) :
+Actor::Actor(ModifierManager* modifiers, const Rect& area, unsigned long& keystate) :
     WorldObject(40, 33),
+    _modifiers(modifiers),
     _area(area),
     _image(IMG_ACTOR),
     _movementTimer("actor_movement"),
@@ -53,8 +54,9 @@ Rect Actor::boundingRect() const
 //-----------------------------------------------------------------------------
 void Actor::update()
 {
+    double movementSpeed = (_modifiers->isModifierActive(Modifier::mBoost) ? 0.025 : 0.050);
 
-    if (_movementTimer.elapsed() > 0.050) {
+    if (_movementTimer.elapsed() > movementSpeed) {
 
         if ((_keystate & KEYSTATE_LEFT) && (_position.x() > _area.left())) {
             _position.setX(_position.x() - 1);

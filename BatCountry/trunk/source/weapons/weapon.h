@@ -24,6 +24,7 @@
 
 #include "bullet.h"
 #include "sound/audiosource.h"
+#include "modifiers/modifiermanager.h"
 #include <vector>
 
 
@@ -44,7 +45,7 @@ public:
 
 
 public:
-    Weapon(double fireCooldownTimeout);
+    Weapon(ModifierManager* modifiers, double fireCooldownTimeout);
     virtual ~Weapon();
     bool itemIsSold() const { return _itemIsSold; }
     int ammunition() const { return _ammunition; }
@@ -66,6 +67,7 @@ protected:
 
 
 protected:
+    ModifierManager* _modifiers; 
     AudioSource* _fireSound;
     bool _itemIsSold;
     int _ammunition;

@@ -23,7 +23,8 @@
 
 
 //-----------------------------------------------------------------------------
-Weapon::Weapon(double fireCooldownTimeout) :
+Weapon::Weapon(ModifierManager* modifiers, double fireCooldownTimeout) :
+    _modifiers(modifiers),
     _itemIsSold(false),
     _ammunition(0),
     _fireCooldownTimeout(fireCooldownTimeout),
@@ -58,7 +59,8 @@ void Weapon::buyAmmunitionBundle()
 //-----------------------------------------------------------------------------
 bool Weapon::canFire() const
 {
-    return (_fireCooldownTimer.elapsed() > _fireCooldownTimeout);
+    double cooldownTimeout = (_modifiers->isModifierActive(Modifier::mBoost) ? _fireCooldownTimeout / 2.0 : _fireCooldownTimeout);
+    return (_fireCooldownTimer.elapsed() > cooldownTimeout);
 }
 
 

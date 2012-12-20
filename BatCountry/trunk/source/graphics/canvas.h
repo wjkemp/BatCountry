@@ -43,6 +43,7 @@ public:
     void drawBitmap(const Bitmap& bitmap, int x, int y);
     void drawElement(const Element& element, int x, int y);
     void drawText(const char* text, int x, int y, Color color);
+    void drawRtlText(const char* text, int x, int y, Color color);
 
     unsigned long* buffer() { return _buffer; }
 

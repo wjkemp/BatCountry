@@ -97,16 +97,19 @@ void BitmapGraphicsDevice::render(Canvas& canvas)
             int destX = (w * _characterWidth);
             int destY = (h * _characterHeight);
 
-            al_draw_tinted_bitmap_region(
-                _font,
-                _foregroundColors[foregroundColorIndex],
-                srcX,
-                srcY,
-                _characterWidth,
-                _characterHeight,
-                destX,
-                destY,
-                0);
+            if (characterIndex) {
+
+              al_draw_tinted_bitmap_region(
+                  _font,
+                  _foregroundColors[foregroundColorIndex],
+                  srcX,
+                  srcY,
+                  _characterWidth,
+                  _characterHeight,
+                  destX,
+                  destY,
+                  0);
+            }
 
         }
     }

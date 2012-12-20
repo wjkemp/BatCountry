@@ -1,4 +1,4 @@
-/*  random.cpp
+/*  modifierlistitem.cpp
  *
  *  Copyright (C) 2012 Willem Kemp <http://www.thenocturnaltree.com/>
  *  All rights reserved.
@@ -19,49 +19,58 @@
  *  along with BatCountry. If not, see http://www.gnu.org/licenses/.
  *
  */
-#include "random.h"
-#include <stdlib.h>
+#include "modifierlistitem.h"
 
 
 //-----------------------------------------------------------------------------
-double Random::random()
+ModifierListItem::ModifierListItem() :
+    _activeTimer("modifier_list_timer")
 {
-    return ((double)rand() / (double)RAND_MAX);
+
 }
 
 
 //-----------------------------------------------------------------------------
-int Random::random(int scale)
+ModifierListItem::ModifierListItem(const Modifier& modifier) :
+    _modifier(modifier),
+    _activeTimer("modifier_list_timer")
 {
-    return (int)(random() * scale);
+
 }
 
 
 //-----------------------------------------------------------------------------
-bool Random::choice()
+ModifierListItem::ModifierListItem(const ModifierListItem& obj) :
+    _modifier(obj._modifier),
+    _activeTimer("modifier_list_timer")
 {
-    return (random() > 0.5);
+
 }
 
 
 //-----------------------------------------------------------------------------
-bool Random::choice(double probability)
+ModifierListItem::~ModifierListItem()
 {
-    return (random() <= probability);
+
 }
 
 
 //-----------------------------------------------------------------------------
-double Random::randomAngle(double initial, double deviation)
+Modifier ModifierListItem::modifier() const
 {
-    // Random deviation
-    double randomDeviation = (random() * deviation);
-    if (choice()) {
-        randomDeviation *= -1;
-    }
+    return _modifier;
+}
 
-    // Scale
-    double radians = (((initial + randomDeviation) * (2.0 * 3.141)) / 360.0);
 
-    return -radians;
+//-----------------------------------------------------------------------------
+bool ModifierListItem::expired() const
+{
+    return (_activeTimer.elapsed() > 10.0);
+}
+
+
+//-----------------------------------------------------------------------------
+void ModifierListItem::resetActiveTimer()
+{
+    _activeTimer.reset();
 }

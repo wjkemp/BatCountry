@@ -32,7 +32,7 @@ class Machinegun : public Weapon
 {
 
 public:
-    Machinegun();
+    Machinegun(ModifierManager* modifiers);
     ~Machinegun();
     std::string fullName() const            { return "Machinegun"; }
     std::string shortName() const           { return "Machinegun"; }

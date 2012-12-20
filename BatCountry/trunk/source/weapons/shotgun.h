@@ -33,7 +33,7 @@ class Shotgun : public Weapon
 {
 
 public:
-    Shotgun();
+    Shotgun(ModifierManager* modifiers);
     ~Shotgun();
     std::string fullName() const            { return "Shotgun"; }
     std::string shortName() const           { return "Shotgun"; }

@@ -52,6 +52,8 @@ private:
     Canvas _canvas;
     std::list<Widget*> _stack;
     Timer _renderTimer;
+    double _frameRate;
+    int _frameCounter;
 
 };
 

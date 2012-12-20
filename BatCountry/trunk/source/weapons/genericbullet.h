@@ -39,11 +39,13 @@ public:
         double directionY,
         int damage,
         double velocity,
+        bool penetrating,
         const Rect& activeRect,
         const Element& element);
     ~GenericBullet();
 
     void update();
+    bool isPenetrating() const;
     bool intersects(const Rect& rect) const;
 
 protected:
@@ -55,6 +57,7 @@ private:
     double _directionX;
     double _directionY;
     double _velocity;
+    bool _penetrating;
 };
 
 
