@@ -37,8 +37,8 @@ public:
     std::string fullName() const            { return "Pistol"; }
     std::string shortName() const           { return "Pistol"; }
     int itemPrice() const                   { return 0; }
-    int ammunitionBundlePrice() const       { return 20; }
-    int ammunitionBundleSize() const        { return 50; }
+    int ammunitionBundlePrice() const       { return 50; }
+    int ammunitionBundleSize() const        { return 1000; }
     std::vector<Bullet*> fire(Point position, Direction direction, Rect boundingArea);
 
 };
