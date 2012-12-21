@@ -229,8 +229,7 @@ void GameWidget::updateEvent()
                 _gameState = sBuyWeapons;
             }
 
-            //if (_statistics.infestationPercentage() >= 100) {
-            if (_statistics.infestationPercentage() >= 1) {
+            if (_statistics.infestationPercentage() >= 100) {
                 _keystate = 0;
                 _gameState = sGameOver;
                 _widgetStack->pushWidget(_gameOverWidget);
