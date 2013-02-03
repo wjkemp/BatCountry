@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib comctl32.lib allegro-5.0.8-mt-debug.lib allegro_image-5.0.8-mt-debug.lib allegro_audio-5.0.8-mt-debug.lib allegro_acodec-5.0.8-mt-debug.lib"
+				AdditionalDependencies="winmm.lib comctl32.lib allegro-5.0.6-mt-debug.lib allegro_image-5.0.6-mt-debug.lib allegro_audio-5.0.6-mt-debug.lib allegro_acodec-5.0.6-mt-debug.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="d:\Libraries\DX10SDK\Lib\x86;d:\Libraries\Allegro\lib"
 				GenerateDebugInformation="true"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib comctl32.lib allegro-5.0.8-mt.lib allegro_image-5.0.8-mt.lib allegro_audio-5.0.8-mt.lib allegro_acodec-5.0.8-mt.lib"
+				AdditionalDependencies="winmm.lib comctl32.lib allegro-5.0.6-mt.lib allegro_image-5.0.6-mt.lib allegro_audio-5.0.6-mt.lib allegro_acodec-5.0.6-mt.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="d:\Libraries\DX10SDK\Lib\x86;d:\Libraries\Allegro\lib"
 				GenerateDebugInformation="true"
@@ -512,6 +512,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\source\utilities\pointf.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\utilities\pointf.h"
+					>
+				</File>
+				<File
 					RelativePath="..\source\utilities\random.cpp"
 					>
 				</File>
@@ -525,6 +533,14 @@
 				</File>
 				<File
 					RelativePath="..\source\utilities\rect.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\utilities\rectf.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\utilities\rectf.h"
 					>
 				</File>
 				<File

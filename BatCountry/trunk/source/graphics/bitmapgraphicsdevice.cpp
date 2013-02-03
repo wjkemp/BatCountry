@@ -16,7 +16,6 @@ BitmapGraphicsDevice::BitmapGraphicsDevice(int width, int height, bool fullscree
     }
 
     _display = al_create_display(_width * _characterWidth, _height * _characterHeight);
-    al_set_target_bitmap(al_get_backbuffer(_display));
 
     // Create an event queue
     _eventQueue = al_create_event_queue();
@@ -98,7 +97,6 @@ void BitmapGraphicsDevice::render(Canvas& canvas)
             int destY = (h * _characterHeight);
 
             if (characterIndex) {
-
               al_draw_tinted_bitmap_region(
                   _font,
                   _foregroundColors[foregroundColorIndex],
@@ -110,11 +108,18 @@ void BitmapGraphicsDevice::render(Canvas& canvas)
                   destY,
                   0);
             }
-
         }
     }
 
 
+
+    /*
+    ALLEGRO_LOCKED_REGION* region;
+    ALLEGRO_BITMAP* bitmap = al_get_backbuffer(_display);
+    //region = al_lock_bitmap(bitmap, ALLEGRO_PIXEL_FORMAT_RGB_555, ALLEGRO_LOCK_WRITEONLY);
+    //memset(region->data, 0xc0, 640*480*4);
+    al_unlock_bitmap(bitmap);
+*/
 
     al_flip_display();
 }
