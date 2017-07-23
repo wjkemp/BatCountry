@@ -1,0 +1,9 @@
+
+#ifndef VERSION_H
+#define VERSION_H
+
+#define VERSION "@VERSION@"
+#define BUILD_DATE "@BUILD_DATE@"
+
+#endif
+
